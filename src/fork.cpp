@@ -12,10 +12,10 @@ decltype (fork) *__fork = fork;
 std::function<int()> sproc::wes_system_handler(const std::string& cmd) {
     return [cmd](){ 
         const auto code = std::system(cmd.c_str());
-        if(code == cmd_not_found_code) {
-            return cmd_not_found_code;
+        if(WIFEXITED(code)) {
+            return WEXITSTATUS(code);
         } else {
-            return WEXITSTATUS(code);    
+            return code;
         }        
     };
 }
@@ -59,6 +59,8 @@ sproc::process_result sproc::fork(const std::function<int()> &callback) {
             result.code = WEXITSTATUS(status);
             result.out = pipes.read_all(Read);
             result.err = pipes.read_all(ReadErr);
+        } else {
+            result.code = status;
         }
     } else {
         pipes.rdup2(Write, STDIN_FILENO);
