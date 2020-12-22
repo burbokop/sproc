@@ -17,9 +17,9 @@ target_link_libraries(your_executable_or_lib
 
 ## example
 
-This example shows using `sproc::environment::auto_system` function which is same as std::system but if cmd not found on mashine it will be installed authomatically.</br>
+This example shows using `sproc::environment::auto_system` function which is same as `std::system` but if cmd not found on mashine it will be installed authomatically.</br>
 
-Function `auto_system_example creates` "result.pdf" file in working directory.
+Function `auto_system_example` creates `result.pdf` file in working directory.
 
 ```
 #include <sproc/src/environment.h>
