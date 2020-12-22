@@ -9,6 +9,9 @@ namespace c_interface {
 decltype (fork) *__fork = fork;
 };
 
+std::function<int()> sproc::wes_system_handler(const std::string& cmd) {
+    return [cmd](){ return WEXITSTATUS(std::system(cmd.c_str())); };
+}
 
 std::ostream &sproc::operator<<(std::ostream &stream, const sproc::process_result &r) {
     if(r.err.size() > 0) {
