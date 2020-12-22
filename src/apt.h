@@ -102,12 +102,13 @@ bool download_package(const std::string& package, bool forced = false, bool with
  */
 void local_extract(bool debug = true);
 /**
- * @brief install_package (MUTATOR) - will call "download_package" funk, whan "local_extract"
+ * @brief install_package (MUTATOR) - will call "download_package" funk, than "local_extract"
  * @param package
  * @param forced - the same as "forced" argument in "download_package" funk
+ * @param debug - if true print to console info about installation
  * @return
  */
-bool install_package(const std::string &package, bool forced = false);
+bool install_package(const std::string &package, bool forced = false, bool debug = true);
 
 }
 }

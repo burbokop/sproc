@@ -34,9 +34,9 @@ bool sproc::apt::meta::clear(const std::string &path) {
 }
 
 
-bool sproc::apt::install_package(const std::string &package, bool forced) {
-    if(download_package(package, forced)) {
-        local_extract();
+bool sproc::apt::install_package(const std::string &package, bool forced, bool debug) {
+    if(download_package(package, forced, true, debug)) {
+        local_extract(debug);
         return true;
     }
     return false;
