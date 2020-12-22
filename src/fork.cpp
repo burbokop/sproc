@@ -10,7 +10,14 @@ decltype (fork) *__fork = fork;
 };
 
 std::function<int()> sproc::wes_system_handler(const std::string& cmd) {
-    return [cmd](){ return WEXITSTATUS(std::system(cmd.c_str())); };
+    return [cmd](){ 
+        const auto code = std::system(cmd.c_str())
+        if(code == 32512) {
+            return code;
+        } else {
+            return WEXITSTATUS(code);    
+        }        
+    };
 }
 
 std::ostream &sproc::operator<<(std::ostream &stream, const sproc::process_result &r) {
