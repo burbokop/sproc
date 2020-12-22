@@ -1,5 +1,8 @@
 # sproc
-sproc (Sexy Process) is the library for running child processes on linux.
+Sproc (Sexy Process) is the library for running child processes on linux.
+
+## note
+This library may not be available on Windows because it use apt-get technology. It is possible to create windows apt-get client, but all packages aveilable in apt-get is created for linux so will not work on Windows.
 
 
 ## adding sproc to your c++ project
