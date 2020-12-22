@@ -36,6 +36,11 @@ static inline std::string cmd_not_found_apt     = "apt";
 static inline std::string cmd_not_found_install = "install";
 }
 
+namespace default_values {
+static const inline bool forced = true;
+static const inline bool debug = true;
+}
+
 namespace debug {
 static inline std::string downloading_package            = "Downloading package | ";
 static inline std::string downloading_package_plug       = "                    | ";
@@ -95,12 +100,12 @@ bool download_deb(const std::string& package);
  * @param debug - if true print to console info about downloading
  * @return true if pack is downloaded succesfully or already installed.
  */
-bool download_package(const std::string& package, bool forced = false, bool with_dependencies = true, bool debug = true);
+bool download_package(const std::string& package, bool forced = default_values::forced, bool with_dependencies = true, bool debug = default_values::debug);
 /**
  * @brief local_extract (MUTATOR) - extract all downloaded packages
  * @param debug - if true print to console info about extraction
  */
-void local_extract(bool debug = true);
+void local_extract(bool debug = default_values::debug);
 /**
  * @brief install_package (MUTATOR) - will call "download_package" funk, than "local_extract"
  * @param package
@@ -108,7 +113,7 @@ void local_extract(bool debug = true);
  * @param debug - if true print to console info about installation
  * @return
  */
-bool install_package(const std::string &package, bool forced = false, bool debug = true);
+bool install_package(const std::string &package, bool forced = default_values::forced, bool debug = default_values::debug);
 
 }
 }

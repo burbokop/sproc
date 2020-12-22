@@ -182,7 +182,8 @@ std::string sproc::apt::info::pack_name_by_cmd(const std::string &cmd) {
                     if(pos >= 0 && pos < line.size()) {
                         const auto begin
                                 = line.find(matchings::cmd_not_found_install)
-                                + matchings::cmd_not_found_apt.size();
+                                + matchings::cmd_not_found_install.size()
+                                + 1 /* one space char */;
                         if(begin >= 0 && begin < line.size()) {
                             const auto end = line.find(' ', begin);
                             if(end >= 0 && end <= line.size()) {

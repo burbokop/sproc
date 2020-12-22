@@ -12,6 +12,11 @@ typedef std::vector<pipe> pipe_vector;
 
 std::string read_all(file_des fd);
 
+/**
+ * @brief The pipe_container class provides simple interface for managing c pipes
+ * @note The pipe_container class has form of vector
+ * @note The pipe_container class authomatically close all pipes in destructor
+ */
 class pipe_container {
     pipe_vector pipes;
     bool closed = false;
