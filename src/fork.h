@@ -5,7 +5,8 @@
 #include <functional>
 
 namespace sproc {
-    
+
+inline static const int cmd_not_found_code = 32512;
 std::function<int()> wes_system_handler(const std::string& cmd);
     
 struct process_result {
