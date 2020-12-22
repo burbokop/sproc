@@ -12,8 +12,8 @@ decltype (fork) *__fork = fork;
 std::function<int()> sproc::wes_system_handler(const std::string& cmd) {
     return [cmd](){ 
         const auto code = std::system(cmd.c_str())
-        if(code == 32512) {
-            return code;
+        if(code == cmd_not_found_code) {
+            return cmd_not_found_code;
         } else {
             return WEXITSTATUS(code);    
         }        
