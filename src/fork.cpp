@@ -21,9 +21,6 @@ std::ostream &sproc::operator<<(std::ostream &stream, const sproc::process_resul
     return stream;
 }
 
-
-
-
 sproc::process_result sproc::fork(const std::function<int()> &callback) {
     process_result result;
     constexpr static size_t PIPES_COUNT = 3;
