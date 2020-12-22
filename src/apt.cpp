@@ -5,6 +5,17 @@
 #include <fstream>
 #include "fork.h"
 
+
+namespace color {
+const char* reset = "\033[0m";
+const char* red     = "\x1B[91m";
+const char* green   = "\x1B[92m";
+const char* yellow  = "\x1B[93m";
+const char* magenta = "\x1B[95m";
+const char* cyan    = "\x1B[96m";
+}
+
+
 bool sproc::apt::meta::contains(const std::string &package, const std::string &path) {
     std::ifstream imeta(path, std::ios::in);
     if(imeta.is_open()) {
@@ -46,19 +57,25 @@ bool sproc::apt::install_package(const std::string &package, bool forced, bool d
 bool sproc::apt::download_package(const std::string &package, bool forced, bool with_dependencies, bool debug) {
     if(debug) std::cout
             << debug::downloading_package
+            << color::cyan
             << package
+            << color::reset
             << std::endl;
     if(info::is_installed_in_root(package) && !forced) {
         if(debug) std::cout
                 << debug::downloading_package_plug
+                << color::magenta
                 << debug::package_found_in_foot
+                << color::reset
                 << std::endl;
         return true;
     }
     if(meta::contains(package, download_meta_file)) {
         if(debug) std::cout
                 << debug::downloading_package_plug
+                << color::magenta
                 << debug::package_already_downloaded
+                << color::reset
                 << std::endl;
         return true;
     }
@@ -74,7 +91,9 @@ bool sproc::apt::download_package(const std::string &package, bool forced, bool 
         } else {
             if(debug) std::cerr
                     << debug::downloading_package_plug
+                    << color::red
                     << debug::listing_dependencies_failed
+                    << color::reset
                     << std::endl;
             return false;
         }
@@ -83,13 +102,17 @@ bool sproc::apt::download_package(const std::string &package, bool forced, bool 
     if(download_deb(package)) {
         if(debug) std::cout
                 << debug::downloading_package_plug
+                << color::green
                 << debug::package_downloading_compleated
+                << color::reset
                 << std::endl;
         return true;
     } else {
         if(debug) std::cerr
                 << debug::downloading_package_plug
+                << color::red
                 << debug::package_downloading_failed
+                << color::reset
                 << std::endl;
         return false;
     }
@@ -107,17 +130,23 @@ void sproc::apt::local_extract(bool debug) {
                 if(!meta::contains(deb_path, install_meta_file)) {
                     if(debug) std::cout
                             << debug::extracting_package
+                            << color::cyan
                             << deb_path
+                            << color::reset
                             << ' ';
                     const auto res = sproc::system(cmds::extract + deb_path + " ./");
                     if(res.err.size() == 0) {
                         meta::append(deb_path, install_meta_file);
                         if(debug) std::cout
+                                << color::green
                                 << debug::extracting_package_success
+                                << color::reset
                                 << std::endl;
                     } else {
                         if(debug) std::cout
+                                << color::red
                                 << debug::extracting_package_failed
+                                << color::reset
                                 << std::endl
                                 << res.err
                                 << std::endl;
