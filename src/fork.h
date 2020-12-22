@@ -5,6 +5,9 @@
 #include <functional>
 
 namespace sproc {
+    
+std::function<int()> wes_system_handler(const std::string& cmd);
+    
 struct process_result {
     std::string out;
     std::string err;
