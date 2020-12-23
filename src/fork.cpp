@@ -9,6 +9,16 @@ namespace c_interface {
 decltype (fork) *__fork = fork;
 };
 
+std::function<int()> sproc::wes_system_handler(const std::string& cmd) {
+    return [cmd](){ 
+        const auto code = std::system(cmd.c_str());
+        if(WIFEXITED(code)) {
+            return WEXITSTATUS(code);
+        } else {
+            return code;
+        }        
+    };
+}
 
 std::ostream &sproc::operator<<(std::ostream &stream, const sproc::process_result &r) {
     if(r.err.size() > 0) {
@@ -46,6 +56,8 @@ sproc::process_result sproc::fork(const std::function<int()> &callback) {
             result.code = WEXITSTATUS(status);
             result.out = pipes.read_all(Read);
             result.err = pipes.read_all(ReadErr);
+        } else {
+            result.code = status;
         }
     } else {
         pipes.rdup2(Write, STDIN_FILENO);
