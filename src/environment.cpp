@@ -34,19 +34,21 @@ sproc::process_result sproc::environment::system(const std::string &cmd, const s
 }
 
 sproc::process_result sproc::environment::auto_system(const std::string &cmd, bool forced, bool debug) const {
-    const auto pos = cmd.find(' ');
-    std::string cmd_name;
-    if(pos >= 0 && pos < cmd.size()) {
-        cmd_name = cmd.substr(0, pos);
-    } else {
-        cmd_name = cmd;
+    const auto result = system(cmd);
+    if(result.cmd_not_found) {
+        const auto pos = cmd.find(' ');
+        std::string cmd_name;
+        if(pos >= 0 && pos < cmd.size()) {
+            cmd_name = cmd.substr(0, pos);
+        } else {
+            cmd_name = cmd;
+        }
+
+        const auto package = sproc::apt::info::pack_name_by_cmd(cmd_name);
+        if(package.size() > 0)
+            return system(cmd, package, forced, debug);
     }
-
-    const auto package = sproc::apt::info::pack_name_by_cmd(cmd_name);
-    if(package.size() > 0)
-        return system(cmd, package, forced, debug);
-
-    return {};
+    return result;
 }
 
 sproc::process_result sproc::environment::system(const std::string &cmd) const {

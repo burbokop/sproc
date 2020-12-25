@@ -7,6 +7,7 @@ decltype (close) *__close = close;
 decltype (pipe) *__pipe = pipe;
 decltype (read) *__read = read;
 decltype (dup2) *__dup2 = dup2;
+decltype (write) *__write = write;
 };
 
 std::string sproc::read_all(file_des fd) {
@@ -54,4 +55,12 @@ void sproc::pipe_container::close() {
         }
         closed = true;
     }
+}
+
+ssize_t sproc::write_buffer(sproc::file_des fd, void *data, size_t size) {
+    return c_interface::__write(fd, data, size);
+}
+
+ssize_t sproc::read_buffer(sproc::file_des fd, void *data, size_t size) {
+    return c_interface::__read(fd, data, size);
 }
