@@ -27,6 +27,7 @@ public:
      * @param root_dir
      */
     environment(const std::string &root_dir) { m_root_dir = root_dir; }
+    environment(const char* root_dir) { m_root_dir = root_dir; }
     /**
      * @brief install_package (SPROC::APT)
      */
