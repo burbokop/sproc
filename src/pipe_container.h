@@ -3,16 +3,15 @@
 
 #include <vector>
 #include <string>
+#include <array>
 
 namespace sproc {
 
 typedef int file_des;
-typedef file_des pipe[2];
+typedef std::array<file_des, 2> pipe;
 typedef std::vector<pipe> pipe_vector;
 
 std::string read_all(file_des fd);
-ssize_t write_buffer(file_des fd, void *data, size_t size);
-ssize_t read_buffer(file_des fd, void *data, size_t size);
 
 /**
  * @brief The pipe_container class provides simple interface for managing c pipes
@@ -32,30 +31,11 @@ public:
     inline std::string read_all(size_t index) { return sproc::read_all(rfile(index)); }
     inline std::string read_all_reversed(size_t index) { return sproc::read_all(wfile(index)); }
 
-    template<typename T>
-    inline auto write(size_t index, T&& value) { return write_buffer(wfile(index), &value, sizeof (T)); }
-    template<typename T>
-    inline auto write_reversed(size_t index, T&& value) { return write_buffer(rfile(index), &value, sizeof (T)); }
-
-    template<typename T>
-    inline T read(size_t index) {
-        T result;
-        read_buffer(rfile(index), &result, sizeof (T));
-        return result;
-    }
-    template<typename T>
-    inline T read_reversed(size_t index) {
-        T result;
-        read_buffer(wfile(index), &result, sizeof (T));
-        return result;
-    }
-
     void rclose(size_t index);
     void wclose(size_t index);
     void rdup2(size_t index, file_des fd);
     void wdup2(size_t index, file_des fd);
     void close();
-    inline ~pipe_container() { close(); }
 };
 
 

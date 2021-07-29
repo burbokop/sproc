@@ -7,14 +7,13 @@ decltype (close) *__close = close;
 decltype (pipe) *__pipe = pipe;
 decltype (read) *__read = read;
 decltype (dup2) *__dup2 = dup2;
-decltype (write) *__write = write;
 };
 
 std::string sproc::read_all(file_des fd) {
     std::string result;
     while (true) {
         char c[256];
-        auto size = c_interface::__read(fd, &c, sizeof (c));
+        const auto size = c_interface::__read(fd, &c, sizeof (c));
         if(size > 0) {
             result.append(c, size);
         }
@@ -28,7 +27,7 @@ std::string sproc::read_all(file_des fd) {
 sproc::pipe_container::pipe_container(size_t count) {
     pipes = pipe_vector(count);
     for(size_t i = 0; i < count; ++i)
-        c_interface::__pipe(pipes[i]);
+        c_interface::__pipe(pipes[i].data());
 }
 
 void sproc::pipe_container::rclose(size_t index) {
@@ -55,12 +54,4 @@ void sproc::pipe_container::close() {
         }
         closed = true;
     }
-}
-
-ssize_t sproc::write_buffer(sproc::file_des fd, void *data, size_t size) {
-    return c_interface::__write(fd, data, size);
-}
-
-ssize_t sproc::read_buffer(sproc::file_des fd, void *data, size_t size) {
-    return c_interface::__read(fd, data, size);
 }
