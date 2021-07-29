@@ -1,6 +1,8 @@
 #include "pipe_container.h"
 
 #include <unistd.h>
+#include <sys/select.h>
+#include <fcntl.h>
 
 namespace c_interface {
 decltype (close) *__close = close;
@@ -12,6 +14,8 @@ decltype (write) *__write = write;
 
 std::string sproc::read_all(file_des fd) {
     std::string result;
+    int flags = fcntl(fd, F_GETFL, 0);
+    fcntl(fd, F_SETFL, flags | O_NONBLOCK);
     while (true) {
         char c[256];
         auto size = c_interface::__read(fd, &c, sizeof (c));
@@ -22,10 +26,11 @@ std::string sproc::read_all(file_des fd) {
             break;
         }
     }
+    fcntl(fd, F_SETFL, flags);
     return result;
 }
 
-sproc::pipe_container::pipe_container(size_t count) {
+sproc::pipe_container::pipe_container(size_t count) {    
     pipes = pipe_vector(count);
     for(size_t i = 0; i < count; ++i)
         c_interface::__pipe(pipes[i].data());
@@ -64,3 +69,4 @@ ssize_t sproc::write_buffer(sproc::file_des fd, void *data, size_t size) {
 ssize_t sproc::read_buffer(sproc::file_des fd, void *data, size_t size) {
     return c_interface::__read(fd, data, size);
 }
+
