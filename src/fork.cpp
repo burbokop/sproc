@@ -65,6 +65,8 @@ sproc::process_result sproc::fork(const std::function<int()> &callback) {
 sproc::non_blocking::process::process(int pid, pipe_container pipes)
     : m_pid(pid), m_pipes(pipes) {}
 
+sproc::non_blocking::process::process() : m_pipes(0) {}
+
 sproc::process_result sproc::non_blocking::process::wait() {
     int status;
     waitpid(m_pid, &status, 0);

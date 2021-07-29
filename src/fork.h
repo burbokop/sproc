@@ -30,11 +30,13 @@ std::ostream &operator<<(std::ostream& stream, const process_result& r);
 namespace non_blocking {
 
 class process {
-    int m_pid;
+    int m_pid = -1;
     pipe_container m_pipes;
     std::optional<process_result> m_result;
     process(int pid, pipe_container pipes);
 public:
+    process();
+
     process_result wait();
     std::optional<process_result> result();
     std::string read_all_out();
@@ -46,6 +48,8 @@ public:
     T read_err() { return m_pipes.read<T>(read_err_stream); }
 
     friend process fork(const std::function<int()> &callback);
+
+    inline operator bool() const { return m_pid >= 0; }
 };
 
 process fork(const std::function<int()> &callback);
