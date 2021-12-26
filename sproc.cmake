@@ -20,3 +20,13 @@ add_library(sproc SHARED
     ${SOURCES}
     ${HEADERS}
 )
+
+
+
+install(TARGETS sproc DESTINATION lib)
+
+install(DIRECTORY "${CMAKE_CURRENT_LIST_DIR}/src/"
+        DESTINATION include/sproc
+        FILES_MATCHING
+        PATTERN "*.h"
+)
