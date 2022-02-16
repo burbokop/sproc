@@ -20,7 +20,8 @@ add_library(sproc SHARED
     ${SOURCES}
     ${HEADERS}
 )
-
+set_property(TARGET sproc PROPERTY AUTOMOC OFF)
+set_property(TARGET sproc PROPERTY AUTOUIC OFF)
 
 
 install(TARGETS sproc DESTINATION lib)
