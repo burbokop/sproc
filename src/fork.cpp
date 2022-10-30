@@ -134,7 +134,7 @@ sproc::non_blocking::process sproc::non_blocking::fork(const std::function<int (
         const auto code = callback();
         pipes.write(read_meta_stream, static_cast<int>(code));
         pipes.close();
-        std::exit(WEXITSTATUS(code));
+        std::quick_exit(WEXITSTATUS(code));
     }
     return process(0, pipe_container(0));
 }

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.18.4)
 
 set(SOURCES
     ${CMAKE_CURRENT_LIST_DIR}/src/pipe_container.cpp
