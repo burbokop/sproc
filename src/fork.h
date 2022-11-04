@@ -3,6 +3,7 @@
 
 #include "pipe_container.h"
 #include <functional>
+#include <optional>
 
 namespace sproc {
 
@@ -56,7 +57,9 @@ process fork(const std::function<int()> &callback);
 
 }
 
-
+namespace capabilities {
+    extern const bool fork;
+}
 
 process_result fork(const std::function<int()> &callback);
         

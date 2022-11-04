@@ -58,7 +58,7 @@ sproc::process_result sproc::environment::system(const std::string &cmd) const {
 
 sproc::temporary_path::temporary_path(const std::string &new_path) {
     std::filesystem::create_directory(new_path);
-    m_prev_path = std::filesystem::current_path();
+    m_prev_path = std::filesystem::current_path().generic_string();
     std::filesystem::current_path(new_path);
 }
 

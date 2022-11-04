@@ -2,13 +2,28 @@
 
 #include <ostream>
 #include <unistd.h>
+#ifdef __linux__
 #include <sys/wait.h>
+#else
+// TODO add for other platforms
+#endif
 
 #include <iostream>
 
 namespace c_interface {
+#ifdef __linux__
 decltype (fork) *__fork = fork;
+#else
+// TODO add for other platforms
+#endif
 };
+
+const bool sproc::capabilities::fork
+#ifdef __linux__
+    = true;
+#else
+    = false;
+#endif
 
 std::function<int()> sproc::system_handler(const std::string& cmd) {
     return [cmd] {
@@ -29,6 +44,7 @@ sproc::process_result sproc::fork(const std::function<int()> &callback) {
     constexpr static size_t PIPES_COUNT = 4;
 
     pipe_container pipes(PIPES_COUNT);
+#ifdef __linux__
     const auto pid = c_interface::__fork();
     if(pid) {
         pipes.rclose(write_stream);
@@ -59,6 +75,9 @@ sproc::process_result sproc::fork(const std::function<int()> &callback) {
         pipes.close();
         std::exit(WEXITSTATUS(code));
     }
+#else
+// TODO add for other platforms
+#endif
     return result;
 }
 
@@ -69,6 +88,7 @@ sproc::non_blocking::process::process() : m_pipes(0) {}
 
 sproc::process_result sproc::non_blocking::process::wait() {
     int status;
+#ifdef __linux__
     waitpid(m_pid, &status, 0);
     if (WIFEXITED(status)) {
         process_result result;
@@ -81,6 +101,9 @@ sproc::process_result sproc::non_blocking::process::wait() {
         m_pipes.close();
         return result;
     }
+#else
+// TODO add for other platforms
+#endif
     return process_result();
 }
 
@@ -89,6 +112,7 @@ std::optional<sproc::process_result> sproc::non_blocking::process::result() {
         return m_result;
     } else {
         int status;
+#ifdef __linux__
         waitpid(m_pid, &status, WNOHANG);
         if (WIFEXITED(status)) {
             const auto meta = static_cast<int>(m_pipes.read<uint64_t>(read_meta_stream));
@@ -103,6 +127,9 @@ std::optional<sproc::process_result> sproc::non_blocking::process::result() {
             m_pipes.close();
             return m_result;
         }
+#else
+// TODO add for other platforms
+#endif
         return std::nullopt;
     }
 }
@@ -119,6 +146,7 @@ sproc::non_blocking::process sproc::non_blocking::fork(const std::function<int (
     constexpr static size_t PIPES_COUNT = 4;
 
     pipe_container pipes(PIPES_COUNT);
+#ifdef __linux__
     const auto pid = c_interface::__fork();
     if(pid) {
         pipes.rclose(write_stream);
@@ -136,5 +164,8 @@ sproc::non_blocking::process sproc::non_blocking::fork(const std::function<int (
         pipes.close();
         std::quick_exit(WEXITSTATUS(code));
     }
-    return process(0, pipe_container(0));
+#else
+// TODO add for other platforms
+#endif
+    return process(0, pipe_container(PIPES_COUNT));
 }

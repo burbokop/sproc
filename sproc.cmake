@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.18.4)
 set(SOURCES
     ${CMAKE_CURRENT_LIST_DIR}/src/pipe_container.cpp
     ${CMAKE_CURRENT_LIST_DIR}/src/fork.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/src/win/fork.cpp
     ${CMAKE_CURRENT_LIST_DIR}/src/apt.cpp
     ${CMAKE_CURRENT_LIST_DIR}/src/environment.cpp
     ${CMAKE_CURRENT_LIST_DIR}/src/cache.cpp
@@ -11,6 +12,7 @@ set(SOURCES
 set(HEADERS
     ${CMAKE_CURRENT_LIST_DIR}/src/pipe_container.h
     ${CMAKE_CURRENT_LIST_DIR}/src/fork.h
+    ${CMAKE_CURRENT_LIST_DIR}/src/win/fork.h
     ${CMAKE_CURRENT_LIST_DIR}/src/apt.h
     ${CMAKE_CURRENT_LIST_DIR}/src/environment.h
     ${CMAKE_CURRENT_LIST_DIR}/src/cache.h
