@@ -1,8 +1,8 @@
 #include "fork.h"
 
 #include <ostream>
-#include <unistd.h>
 #ifdef __linux__
+#include <unistd.h>
 #include <sys/wait.h>
 #else
 // TODO add for other platforms

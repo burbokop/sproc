@@ -18,10 +18,13 @@ set(HEADERS
     ${CMAKE_CURRENT_LIST_DIR}/src/cache.h
     )
 
-add_library(sproc SHARED
-    ${SOURCES}
-    ${HEADERS}
-)
+if(LINK_ALL_STATIC)
+    add_library(sproc STATIC ${SOURCES} ${HEADERS})
+else()
+    add_library(sproc SHARED ${SOURCES} ${HEADERS})
+endif()
+
+
 set_property(TARGET sproc PROPERTY AUTOMOC OFF)
 set_property(TARGET sproc PROPERTY AUTOUIC OFF)
 

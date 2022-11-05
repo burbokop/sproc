@@ -1,6 +1,6 @@
 #include "cache.h"
-#include <unistd.h>
 #ifdef __linux__
+#include <unistd.h>
 #include <pwd.h>
 #else
 // TODO add for other platforms

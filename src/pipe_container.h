@@ -12,8 +12,8 @@ typedef std::array<file_des, 2> pipe;
 typedef std::vector<pipe> pipe_vector;
 
 std::string read_all(file_des fd);
-ssize_t write_buffer(file_des fd, void *data, size_t size);
-ssize_t read_buffer(file_des fd, void *data, size_t size);
+std::size_t write_buffer(file_des fd, void *data, size_t size);
+std::size_t read_buffer(file_des fd, void *data, size_t size);
 
 /**
  * @brief The pipe_container class provides simple interface for managing c pipes

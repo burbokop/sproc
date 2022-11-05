@@ -1,3 +1,5 @@
 #include "fork.h"
 
-int sproc::win::fork() {}
+int sproc::win::fork() {
+    return 0;
+}

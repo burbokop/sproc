@@ -1,7 +1,7 @@
 #include "pipe_container.h"
 
-#include <unistd.h>
 #ifdef __linux__
+#include <unistd.h>
 #include <sys/select.h>
 #else
 // TODO add for other platforms
@@ -69,11 +69,19 @@ void sproc::pipe_container::wclose(size_t index) {
 }
 
 void sproc::pipe_container::rdup2(size_t index, file_des fd) {
+#ifdef __linux__
     dup2(rfile(index), fd);
+#else
+// TODO add for other platforms
+#endif
 }
 
 void sproc::pipe_container::wdup2(size_t index, file_des fd) {
+#ifdef __linux__
     dup2(wfile(index), fd);
+#else
+// TODO add for other platforms
+#endif
 }
 
 void sproc::pipe_container::close() {
@@ -86,7 +94,7 @@ void sproc::pipe_container::close() {
     }
 }
 
-ssize_t sproc::write_buffer(sproc::file_des fd, void *data, size_t size) {
+std::size_t sproc::write_buffer(sproc::file_des fd, void *data, size_t size) {
 #ifdef __linux__
     return c_interface::__write(fd, data, size);
 #else
@@ -95,7 +103,7 @@ ssize_t sproc::write_buffer(sproc::file_des fd, void *data, size_t size) {
 #endif
 }
 
-ssize_t sproc::read_buffer(sproc::file_des fd, void *data, size_t size) {
+std::size_t sproc::read_buffer(sproc::file_des fd, void *data, size_t size) {
 #ifdef __linux__
     return c_interface::__read(fd, data, size);
 #else
